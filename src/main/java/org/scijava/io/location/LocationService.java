@@ -32,6 +32,7 @@
 
 package org.scijava.io.location;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -52,12 +53,21 @@ public interface LocationService extends HandlerService<URI, LocationResolver>,
 	 * Turns the given string into an {@link URI}, then resolves it to a
 	 * {@link Location}
 	 * 
-	 * @param uri the uri to resolve
+	 * @param uriString the uri to resolve
 	 * @return the resolved {@link Location}
 	 * @throws URISyntaxException if the URI is malformed
 	 */
-	default Location resolve(final String uri) throws URISyntaxException {
-		return resolve(new URI(uri));
+	default Location resolve(final String uriString) throws URISyntaxException {
+		final URI uri = new URI(uriString);
+		if (uri.getScheme() == null) {
+			// Fall-back: we try to create a FileLocation,
+			// in case the user passed a path instead of an URI.
+			final File file = new File(uriString);
+			if (file.exists()) {
+				return new FileLocation(file);
+			}
+		}
+		return resolve(uri);
 	}
 
 	/**
