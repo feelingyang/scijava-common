@@ -118,6 +118,11 @@ public class FileLocation extends AbstractLocation implements
 		return file.isDirectory();
 	}
 
+	@Override
+	public String toString() {
+		return "FileLocation: " + file.getAbsolutePath();
+	}
+
 	// -- Helper methods --
 
 	private void validateDirectory() {
