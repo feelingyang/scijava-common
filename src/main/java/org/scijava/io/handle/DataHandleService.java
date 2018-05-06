@@ -32,6 +32,7 @@
 
 package org.scijava.io.handle;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import org.scijava.io.IOService;
@@ -66,6 +67,19 @@ public interface DataHandleService extends
 		return Location.class;
 	}
 
+	/**
+	 * Convenience method to test whether it describes an existing file.
+	 *
+	 * @param Location the location to test
+	 * @return The result of {@link DataHandle#exists()} on a newly created handle
+	 *         on this location
+	 * @throws IOException
+	 */
+	default boolean handleExists(Location Location) throws IOException {
+		try (DataHandle<Location> handle = create(Location)) {
+			return handle.exists();
+		}
+	}
 	/**
 	 * Wraps the provided {@link DataHandle} in a read-only buffer for accelerated
 	 * reading.
