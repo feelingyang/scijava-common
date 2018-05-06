@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -52,6 +53,7 @@ public class FileLocation extends AbstractLocation implements
 	private final File file;
 
 	public FileLocation(final File file) {
+		Objects.requireNonNull(file);
 		this.file = file;
 	}
 
@@ -116,6 +118,11 @@ public class FileLocation extends AbstractLocation implements
 	@Override
 	public boolean isDirectory() {
 		return file.isDirectory();
+	}
+
+	@Override
+	public String toString() {
+		return "FileLocation: " + file.getAbsolutePath();
 	}
 
 	// -- Helper methods --
